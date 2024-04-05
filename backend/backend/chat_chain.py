@@ -74,29 +74,7 @@ def get_chat_chain(start_time=None, end_time=None):
     else:
         db = Chroma.from_documents(docs, embeddings, persist_directory="../chroma_db")
 
-    
-    if False:
-        print(start_time, end_time)
-        import datetime
-
-        start_date = start_time / 1000  # Convert from milliseconds to seconds
-        end_date = end_time / 1000  # Convert from milliseconds to seconds
-
-        start_date_iso = datetime.datetime.utcfromtimestamp(start_date).isoformat()
-        end_date_iso = datetime.datetime.utcfromtimestamp(end_date).isoformat()
-
-        print(f"Start date in ISO 8601 format: {start_date_iso}")
-        print(f"End date in ISO 8601 format: {end_date_iso}")
-        filter = {
-        "starttime": {
-            "$gte": start_time,
-            "$lte": end_time
-        }}
-        semantic_retriever = db.as_retriever(k=7, where = filter)
-        print(semantic_retriever)
-    
-    else:
-        semantic_retriever = db.as_retriever(k=7)
+    semantic_retriever = db.as_retriever(k=7)
     
         #docs = [doc for doc in docs if doc.metadata["starttime"] >= start_time and doc.metadata["starttime"] <= end_time]
     # Defining our semantic retriever, which will return the top-7 most semantically relevant chunks

@@ -10,7 +10,6 @@ import os
 from operator import itemgetter
 from langchain_core.output_parsers import StrOutputParser
 from .chat_chain import get_chat_chain
-from .recent_chat_chain import get_recent_chat_chain
 
 #Paul: lily said:
 # The user will ask a question
@@ -149,54 +148,25 @@ def json_chatbot_post(request):
         llm_response_data = json.loads(response)
         print("llm_response_data_json: ",llm_response_data)
         
-        isHistorical = llm_response_data['isHistorical']
-        needsWeather = llm_response_data['needsWeather']
-        addPhotos = llm_response_data['addPhotos']
-        needsMap = llm_response_data['needsMap']
-        isExpedia = llm_response_data['isExpedia']
         startDate = llm_response_data['start_date']
         endDate = llm_response_data['end_date']
-        detailedPrompt = llm_response_data['detailed_prompt']
-        parade_list = llm_response_data['parade_list']
+      
+        # Invoke the chat chain with the detailed prompt
+        # Paul: find documentation in chat_chain.py
+        response = get_chat_chain(start_time=startDate,end_time=endDate).invoke({"question": question, "chat_history": chat_history})
         
-        if isHistorical:
-            print('isHistorical is true')
-            
-            # Invoke the chat chain with the detailed prompt
-            # Paul: find documentation in chat_chain.py
-            response = get_chat_chain(start_time=startDate,end_time=endDate).invoke({"question": question, "chat_history": chat_history})
-            
-            # Append the question and response to the chat history
-            chat_history.append({"role": "human", "content": question})
-            chat_history.append({"role": "ai", "content": response})
-            
-            return JsonResponse({
-                'chat_history': chat_history,
-                'latest_response': response
-            })
-        elif not isHistorical:
-            print('isHistorical is false')
-            
-            # Invoke the recent chat chain with the detailed prompt
-            response = get_recent_chat_chain(weather=needsWeather,parade_list=parade_list).invoke({"question": question, "chat_history": chat_history})
-            chat_history.append({"role": "human", "content": question})
-            chat_history.append({"role": "ai", "content": response})
-            
-            return JsonResponse({
-                'chat_history': chat_history,
-                'latest_response': response
-            })
-            
-    except Exception as e:
-        print("Backup plan: ",e)
-        
-        # Invoke the recent chat chain with the original question
-        response = get_recent_chat_chain().invoke({"question": question, "chat_history": chat_history})
+        # Append the question and response to the chat history
         chat_history.append({"role": "human", "content": question})
         chat_history.append({"role": "ai", "content": response})
         
-        #Paul: return the response ot the JSON data parsed from llm just earlier. 
         return JsonResponse({
             'chat_history': chat_history,
             'latest_response': response
         })
+    except Exception as e:
+        return JsonResponse({
+            'chat_history': chat_history,
+            'latest_response': str(e)
+        })
+       
+    
