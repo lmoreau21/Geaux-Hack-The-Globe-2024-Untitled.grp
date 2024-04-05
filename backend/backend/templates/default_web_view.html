@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mardi Gras Chatbot API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #9700c5;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .example {
+            background-color: #EFEFEF;
+            border-left: 4px solid #9700c5;
+            padding: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .note {
+            color: #9700c5;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mardi Gras Chatbot API</h1>
+        <p>Welcome to the Mardi Gras Chatbot API! Use our API to engage in interactive conversations with a virtual Mardi Gras enthusiast. Below you'll find information on how to use the `/chatbot/post/` endpoint.</p>
+        
+        <h2>Endpoint: /chatbot/post/</h2>
+        <p>This endpoint accepts POST requests to initiate or continue a conversation with the chatbot.</p>
+
+        <h3>Request Format</h3>
+        <p>Send a JSON object with the following structure:</p>
+        <div class="example">
+<pre>{
+  "chat_history": [
+    {"type": "human", "content": "Hello! What can you tell me about Mardi Gras?"},
+    {"type": "ai", "content": "Mardi Gras is a vibrant celebration with parades, masquerade balls, and lots of music and dancing."}
+  ],
+  "question": "Can you recommend some traditional foods?"
+}</pre>
+        </div>
+
+        <h3>Response Format</h3>
+        <p>The response will include the updated chat history and the latest response from the chatbot:</p>
+        <div class="example">
+<pre>{
+  "chat_history": [
+    {"type": "human", "content": "Hello! What can you tell me about Mardi Gras?"},
+    {"type": "ai", "content": "Mardi Gras is a vibrant celebration with parades, masquerade balls, and lots of music and dancing."},
+    {"type": "human", "content": "Can you recommend some traditional foods?"},
+    {"type": "ai", "content": "Certainly! Be sure to try King Cake, jambalaya, gumbo, and beignets."}
+  ],
+  "latest_response": "Certainly! Be sure to try King Cake, jambalaya, gumbo, and beignets."
+}</pre>
+        </div>
+
+        <p class="note">Note: Replace the content of `chat_history` and `question` with your specific conversation context and query.</p>
+    </div>
+</body>
+</html>

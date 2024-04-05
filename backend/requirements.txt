@@ -1,0 +1,12 @@
+Django==4.1
+djangorestframework==3.14.0
+langchain==0.1.9
+langchain_community
+langchain_openai==0.0.8
+python-dotenv==1.0.1
+Requests==2.31.0
+chromadb
+cohere
+rank_bm25
+django-cors-headers
+urllib3
