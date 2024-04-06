@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import {FormControl, Select, MenuItem} from '@mui/material';
-import { Accordion, AccordionSummary, AccordionDetails, Switch} from '@mui/material';
+import {Link, Accordion, AccordionSummary, AccordionDetails, Switch} from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -28,7 +28,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Brightness4Icon from '@mui/icons-material/Brightness4'; // Moon icon
 import WbSunnyIcon from '@mui/icons-material/WbSunny'; // Sun icon
-
+import './App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Chat from './Chat.jsx'
@@ -149,22 +149,27 @@ export default function PersistentDrawer() {
   // Render Accordion for each category
   const renderAccordions = () => {
     return Object.keys(drawerList).map(category => (
-      <Accordion key={category} disableGutters={true}>
+      <Accordion key={category} disableGutters={true} style={{paddingLeft: '14px'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`${category}-content`}
           id={`${category}-header`}
+          
         >
-          <Typography variant='h5'>{category}</Typography>
+          <Typography variant='h6'>{category}</Typography>
         </AccordionSummary>
         <AccordionDetails variant='filled' style={{overflowY: 'auto'}}>
             <List style={{width: '100%'}}>
                 {drawerList[category].map((item, index) => (
-                    <ListItem key={index} sx={{pl: 2}}>
-                        <ListItemText primaryTypographyProps={{fontWeight: 'bold'}}>
-                            <a href={item.url} style={{textDecoration: 'none'}}>{item['display name']}</a>
-                        </ListItemText>
-                    </ListItem>
+                  <ListItem key={index} sx={{pl: 2}}>
+                    <ListItemText >
+                    <Link  href={item.url} color="primary">
+                      
+                        {item['display name']}
+                      
+                    </Link>
+                    </ListItemText>
+                  </ListItem>
                 ))}
             </List>
         </AccordionDetails>
@@ -175,15 +180,18 @@ export default function PersistentDrawer() {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <Box sx={{ display: 'flex'}} >
+        
         <CssBaseline />
         <AppBar position="fixed" open={open}>
+
             <Toolbar style={{justifyContent: 'space-between'}}>
+            
             <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
                 edge="start"
-                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                sx={{ mr: 2, ...(open && { color: 'transparent' }) }}
             >
                 <MenuIcon />
             </IconButton>
@@ -203,7 +211,7 @@ export default function PersistentDrawer() {
                 <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Insurance Chatbot</Typography></MenuItem>
                 </Select>
             </FormControl>
-
+            
             <Switch 
                 checked={darkMode} 
                 onChange={toggleDarkMode} 
@@ -220,6 +228,7 @@ export default function PersistentDrawer() {
             </Toolbar>
             
         </AppBar>
+        
         <Drawer
             sx={{
             width: drawerWidth,
@@ -233,7 +242,9 @@ export default function PersistentDrawer() {
             anchor="left"
             open={open}
         >
-            <DrawerHeader>
+            <DrawerHeader style={{justifyContent:'space-between',marginLeft:'20px'}}>
+              
+            <Typography variant="h6" noWrap component="div">Resources</Typography>
             <IconButton onClick={handleDrawerClose}>
                 {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>

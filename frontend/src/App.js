@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import PersistentDrawer from './PersistentDrawer';
 import { Accessibility } from 'accessibility';
-
+import './App.css';
 window.addEventListener('load', function() {
   var options = {
     textToSpeech: true,
