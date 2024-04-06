@@ -16,9 +16,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
+import CheckIcon from '@mui/icons-material/Check';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import InfoIcon from '@mui/icons-material/Info';
+
 import Chat from './Chat.jsx'
+import {drawerList} from './DrawerList.jsx'
 
 const drawerWidth = 240;
 
@@ -67,6 +71,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+
 export default function PersistentDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -77,6 +82,20 @@ export default function PersistentDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  // Render dropdown menu for each category
+  const renderDropdowns = () => {
+    return Object.keys(drawerList).map(category => (
+      <div key={category}>
+        <h3>{category}</h3>
+        <select>
+          {drawerList[category].map((item, index) => (
+            <option key={index} value={item.url}>{item['display name']}</option>
+          ))}
+        </select>
+      </div>
+    ));
   };
 
   return (
@@ -118,29 +137,7 @@ export default function PersistentDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {renderDropdowns()}
         </List>
       </Drawer>
       <Main open={open}>
