@@ -1,49 +1,16 @@
 import React, { useState } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import { Container, TextField, Button, List, ListItem, ListItemText, Paper, Box } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
-function Chat({handleDrawerOpen}) {
+function Chat() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [latestResponse, setLatestResponse] = useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
-
-  const DrawerList = (
-    <Box sx={{ width: 250}} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -75,15 +42,14 @@ function Chat({handleDrawerOpen}) {
   };
 
   return (
-    <Container maxWidth="sm" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Button onClick={handleDrawerOpen}>Open drawer</Button>
-      <Paper style={{ flexGrow: 1, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
+    <Container style={{ height: '80vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Paper style={{ flexGrow: 1, overflow: 'auto', marginTop: 10, marginBottom: 0, padding: '0px' }}>
         <List>
           {messages.map((message, index) => (
             <ListItem key={index}>
               {/* Render the message content or Markdown based on the role */}
               {message.role === 'ai' ? (
-                <Paper elevation={3} style={{ marginTop: 20, padding: '15px' }}>
+                <Paper elevation={3} style={{ marginTop: 10, padding: '5px' }}>
                   <ReactMarkdown children={latestResponse} remarkPlugins={[remarkGfm]} />
                 </Paper>
               ) : (

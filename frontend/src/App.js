@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 
 import Chat from './Chat';
 import PersistentDrawer from './PersistentDrawer';
-import Chat from './ChatInterface';
 import { Accessibility } from 'accessibility';
 
 window.addEventListener('load', function() {
@@ -20,10 +19,7 @@ function App() {
   };
 
   return (
-    <Box>
-      <Chat handleDrawerOpen={handleDrawerOpen}/>
-      <PersistentDrawer open={open} handleDrawerClose={handleDrawerClose}/>
-    </Box>
+    <PersistentDrawer/>
   );
 }
 
