@@ -30,7 +30,7 @@ def chatbot_post(request):
     '''   
 
     question = request.data.get('question', '')
-    data_source = request.data.get('data_source', 'la_medicaid')
+    data_source = request.data.get('date_type', 'la_medicaid')
     chat_history = request.data.get('chat_history', [])
         
     response = get_chat_chain(data_source=data_source).invoke({"question": question, "chat_history": chat_history})
