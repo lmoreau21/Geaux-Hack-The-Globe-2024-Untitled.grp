@@ -46,7 +46,7 @@ const lightTheme = createTheme({
             main: '#82CEA0',
         },
         background: {
-            default: '#F5F7FC', // Background color
+            default: '#f7fcf', // Background color
           },
           text: {
             primary: '#000000', // Primary text color
@@ -56,8 +56,32 @@ const lightTheme = createTheme({
     typography: {
         fontFamily: 'Roboto, sans-serif', // Default font family
     },
-    // Add other customizations as needed
-});
+    components: {
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: '#C1E1C1', // Background color for Accordion
+          },
+        },
+      },
+      MuiAccordion: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#f7fcf', // Background color for Accordion
+          },
+        },
+      },
+      
+      MuiAccordionDetails: {
+        styleOverrides: {
+          root: {
+            backgroundColor: '#C1E1C1', // Background color for Accordion
+          },
+        },
+      },
+    },
+  });
+
 
 // Define dark mode theme
 const darkTheme = createTheme({
@@ -70,6 +94,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
+    
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -103,6 +128,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
+  
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
@@ -149,19 +175,21 @@ export default function PersistentDrawer() {
   // Render Accordion for each category
   const renderAccordions = () => {
     return Object.keys(drawerList).map(category => (
+      
       <Accordion key={category} disableGutters={true} style={{paddingLeft: '14px'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`${category}-content`}
           id={`${category}-header`}
+          sx = {{ borderBottom:'1px solid black'}} 
           
         >
-          <Typography variant='h6'>{category}</Typography>
+          <Typography variant='h7'>{category}</Typography>
         </AccordionSummary>
-        <AccordionDetails variant='filled' style={{overflowY: 'auto'}}>
-            <List style={{width: '100%'}}>
+        <AccordionDetails  style={{overflowY: 'auto'}}>
+            <List sx={{width: '100%'}} >
                 {drawerList[category].map((item, index) => (
-                  <ListItem key={index} sx={{pl: 2}}>
+                  <ListItem key={index} sx={{pl: 1, padding:0}}>
                     <ListItemText >
                     <Link  href={item.url} color="primary">
                       
@@ -229,9 +257,10 @@ export default function PersistentDrawer() {
             
         </AppBar>
         
-        <Drawer
+        <Drawer 
             sx={{
             width: drawerWidth,
+            
             flexShrink: 0,
             '& .MuiDrawer-paper': {
                 width: drawerWidth,
@@ -250,7 +279,7 @@ export default function PersistentDrawer() {
             </IconButton>
             </DrawerHeader>
             <Divider />
-            <Box>
+            <Box >
             {renderAccordions()}
             </Box>
         </Drawer>
