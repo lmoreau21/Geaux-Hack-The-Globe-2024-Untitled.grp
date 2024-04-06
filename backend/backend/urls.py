@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .json_llm import json_chatbot_post
+from .json_llm import chatbot_post
+#from .json_llm import json_chatbot_post
 from .views import default_web_view
 urlpatterns = [
     path('', default_web_view),
-    path('chatbot/json_post/', json_chatbot_post)
+    #path('chatbot/json_post/', json_chatbot_post)
+    path('chatbot/', chatbot_post)
 ]
 
 #paul: These bottom two url patterns are used in port 8000 so people can communicate directly with backend. 

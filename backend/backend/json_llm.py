@@ -53,7 +53,7 @@ def get_json(request):
     # Create a RAG template for the response
     rag_template = f"""
 
-        You are an analyst of questions for a New Orleans Mardi Gras themed chatbot. 
+        You are an analyst of Louisiana Medicaid eligibility. You have been asked to provide information on the topic of Medicaid eligibility.
         Analyze the following question and provide a structured JSON response that includes: 
         - Whether the question is historical (true/false), Historical questions are anything that happened in the past. If the question is about the future, it is not historical.
             Example: "Show me a photo of a float?" would be historical.
@@ -133,7 +133,7 @@ def json_chatbot_post(request):
     - chat_history: A list of dictionaries containing the updated chat history.
     - latest_response: A string containing the latest response from the chatbot.
     '''
-    #Paul: The main chatbot.py does not create an llm. It doesn't need to because the 
+    
     #request is intended to go here first. 
 
     response = get_json(request)
@@ -170,3 +170,35 @@ def json_chatbot_post(request):
         })
        
     
+@api_view(['POST'])
+def chatbot_post(request):
+    '''
+    This function is a view that handles POST requests to the /chatbot/ endpoint.
+    It takes a question and chat history as input, and returns a response from the chatbot.
+
+    input:
+    - question: A string containing the question to be asked.
+    - chat_history: A list of dictionaries containing the chat history.
+
+    output:
+    - chat_history: A list of dictionaries containing the updated chat history.
+    - latest_response: A string containing the latest response from the chatbot.
+    '''
+    
+    # Get the question from the request data
+    question = request.data.get('question', '')
+    
+    # Get the chat history from the request data
+    chat_history = request.data.get('chat_history', [])
+    
+    # Invoke the chat chain with the question and chat history
+    response = get_chat_chain().invoke({"question": question, "chat_history": chat_history})
+    
+    # Append the question and response to the chat history
+    chat_history.append({"role": "human", "content": question})
+    chat_history.append({"role": "ai", "content": response})
+    
+    return JsonResponse({
+        'chat_history': chat_history,
+        'latest_response': response
+    })
