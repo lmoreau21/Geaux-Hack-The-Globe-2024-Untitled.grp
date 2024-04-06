@@ -10,34 +10,7 @@ import os
 from operator import itemgetter
 from langchain_core.output_parsers import StrOutputParser
 from .chat_chain import get_chat_chain
-
-#Paul: lily said:
-# The user will ask a question
-# That is sent to json llm
-# Json llm will call historical or recent based on the json response
-# Returns mark down for frontend
-
-#dangerouslyset html, soon to be changed to markdown  in the chatinterface.jsx comes from here. You can find a post
-#request in chatinterface.jsx that comes back to here. 
-
-def pull_parade_data():
-    parade_data_list = ""
-    with open('backend/parade_info.json') as f:
-        parade_data = json.load(f)
-
-    for parade in parade_data:
-        data = parade_data[parade]
-        name = parade
-        try :
-            parade_date = data['date']
-            parade_data_list += " " + name + ":" + parade_date + " "
-        except:
-            pass
-        
-    
-    return parade_data_list
-
-
+from django.views.decorators.csrf import csrf_exempt
 
 def get_json(request):
     # Get the OpenAI API key from the environment variable
@@ -170,6 +143,8 @@ def json_chatbot_post(request):
         })
        
     
+
+@csrf_exempt
 @api_view(['POST'])
 def chatbot_post(request):
     '''
@@ -179,22 +154,19 @@ def chatbot_post(request):
     input:
     - question: A string containing the question to be asked.
     - chat_history: A list of dictionaries containing the chat history.
+    - isMedicaid: A boolean indicating whether the question is related to Medicaid.
 
     output:
     - chat_history: A list of dictionaries containing the updated chat history.
     - latest_response: A string containing the latest response from the chatbot.
-    '''
-    
-    # Get the question from the request data
+    '''   
+
     question = request.data.get('question', '')
-    
-    # Get the chat history from the request data
+    data_source = request.data.get('data_source', 'la_medicaid')
     chat_history = request.data.get('chat_history', [])
+        
+    response = get_chat_chain(data_source=data_source).invoke({"question": question, "chat_history": chat_history})
     
-    # Invoke the chat chain with the question and chat history
-    response = get_chat_chain().invoke({"question": question, "chat_history": chat_history})
-    
-    # Append the question and response to the chat history
     chat_history.append({"role": "human", "content": question})
     chat_history.append({"role": "ai", "content": response})
     

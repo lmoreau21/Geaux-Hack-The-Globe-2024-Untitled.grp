@@ -33,30 +33,30 @@ load_dotenv()
 my_openai_api_key = os.getenv("OPENAI_API_KEY")
 my_cohere_api_key = os.getenv("COHERE_API_KEY")
 
-def get_chat_chain(start_time=None, end_time=None):
+def get_chat_chain(data_source="la_medicaid"):
     
     if not my_openai_api_key:
         return Response({"error": "OpenAI API key not configured."}, status=500)
     elif not my_cohere_api_key:
         return Response({"error": "Cohere API key not configured."}, status=500)
     
-    if (os.path.exists("docs.pkl")):
-        docs = pickle.load(open("docs.pkl", "rb"))
-    else:
-        data = RetrieveData() #the "data" here is an object of the "pull_data" class (kind of odd but alright)
-        docs = data.pull_data() #"pull_data" gets the advocate data in a formatted way
-       
-
-    # Now, all of the docs from the advocate is in the "docs" object
-    print("Pulling docs for vanilla Chat Chain ...")
-
     # Using the OpenAI embedding model to create vector embeddings for each chunk
     embeddings = OpenAIEmbeddings(openai_api_key=my_openai_api_key)
-    # Storing chunks along with their vector embeddings into a Chroma database
-    if (os.path.exists("chroma_db")):
-        db = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
+    
+    
+    print(f"Pulling data from {data_source}")
+    
+    if (os.path.exists(f"docs_{data_source}.pkl")):
+        docs = pickle.load(open(f"docs_{data_source}.pkl", "rb"))
     else:
-        db = Chroma.from_documents(docs, embeddings, persist_directory="chroma_db")
+        docs = RetrieveData().pull_data(data_source) 
+        
+       
+    # Storing chunks along with their vector embeddings into a Chroma database
+    if (os.path.exists(f"chroma_db_{data_source}")):
+        db = Chroma(persist_directory=f"chroma_db_{data_source}", embedding_function=embeddings)
+    else:
+        db = Chroma.from_documents(docs, embeddings, persist_directory=f"chroma_db_{data_source}")
 
     semantic_retriever = db.as_retriever(k=7)
     # Defining our lexical retriever, which uses the BM25 algorithm, to retrieve the top-7 most
@@ -92,10 +92,7 @@ def get_chat_chain(start_time=None, end_time=None):
     """
 
     rag_prompt = ChatPromptTemplate.from_template(rag_template)
-    print("Rag created")
-
-    #Paul: Every llm chain has an input handler first to adjust the info the 
-    #chain gets. IN this case...
+    
     def input_handler(input: dict):
         """
         Modifies the input dictionary to include the last 10 chat history responses and the latest question as context.

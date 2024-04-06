@@ -22,14 +22,11 @@ class RetrieveData:
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=50, separators=['.', '\n'])
         self.prepared_docs = []
 
-    def pull_data(self):
+    def pull_data(self, data_source="la_medicaid"):
         # Retrieve the data from the NOLA.com website
-        folder_path = "./backend/la_medicaid"
+        folder_path = "./backend/" + data_source
         count = 0
-        try:
-            self.docs = pickle.load(open("docs.pkl", "rb"))
-        except:
-            self.docs = []
+        self.docs = []
         
         for filename in os.listdir(folder_path):
             print(filename)
@@ -37,6 +34,6 @@ class RetrieveData:
         print(count)
         loader = PyPDFDirectoryLoader(folder_path)
         self.docs = loader.load()
-        pickle.dump(self.docs, open("docs.pkl", "wb"))
+        pickle.dump(self.docs, open(f"docs_{data_source}.pkl", "wb"))
         
         return self.docs

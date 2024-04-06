@@ -24,7 +24,8 @@ function Chat() {
     try {
       const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
         question: inputText,
-        chat_history: updatedMessages
+        chat_history: updatedMessages,
+        date_type: 'data_source'
       });
 
       // Assuming the response is successful and in the expected format
