@@ -9,6 +9,41 @@ function Chat({handleDrawerOpen}) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [latestResponse, setLatestResponse] = useState('');
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -40,9 +75,9 @@ function Chat({handleDrawerOpen}) {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Button onClick={handleDrawerOpen}>Open drawer</Button>
-      <Paper style={{ maxHeight: 500, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
+      <Paper style={{ flexGrow: 1, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
         <List>
           {messages.map((message, index) => (
             <ListItem key={index}>
@@ -59,7 +94,7 @@ function Chat({handleDrawerOpen}) {
         </List>
         
       </Paper>
-      <Box display="flex">
+      <Box display="flex" component="form" onSubmit={sendMessage}>
         <TextField
           variant="outlined"
           fullWidth
@@ -67,7 +102,7 @@ function Chat({handleDrawerOpen}) {
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your message here..."
         />
-        <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={sendMessage}>
+        <Button type="submit" variant="contained" color="primary" endIcon={<SendIcon />}>
           Send
         </Button>
       </Box>

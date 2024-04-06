@@ -3,6 +3,12 @@ import { Box } from '@mui/material';
 
 import Chat from './Chat';
 import PersistentDrawer from './PersistentDrawer';
+import Chat from './ChatInterface';
+import { Accessibility } from 'accessibility';
+
+window.addEventListener('load', function() {
+  new Accessibility();
+}, false);
 
 function App() {
   const [open, setOpen] = React.useState(true);
