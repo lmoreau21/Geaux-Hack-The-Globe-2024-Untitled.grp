@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
-import Chat from './ChatInterface';
+import { Box } from '@mui/material';
+
+import Chat from './Chat';
+import PersistentDrawer from './PersistentDrawer';
 
 function App() {
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+      setOpen(true);
+  };
+  const handleDrawerClose = () => {
+      setOpen(false);
+  };
+
   return (
-    
-    
-    <Chat/>
+    <Box>
+      <Chat handleDrawerOpen={handleDrawerOpen}/>
+      <PersistentDrawer open={open} handleDrawerClose={handleDrawerClose}/>
+    </Box>
   );
 }
 

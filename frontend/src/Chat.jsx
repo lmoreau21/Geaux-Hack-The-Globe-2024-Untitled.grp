@@ -1,57 +1,14 @@
 import React, { useState } from 'react';
-import { Container, TextField, Button, List, ListItem, ListItemText, Paper, Box, Drawer } from '@mui/material';
+import { Container, TextField, Button, List, ListItem, ListItemText, Paper, Box } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import Divider from '@mui/material/Divider';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './NavBar';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-
-function Chat() {
+function Chat({handleDrawerOpen}) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [latestResponse, setLatestResponse] = useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
-
-  const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -84,10 +41,7 @@ function Chat() {
 
   return (
     <Container maxWidth="sm">
-      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
-    <Drawer open={open} onClose={toggleDrawer(false)}>
-      {DrawerList}
-    </Drawer>
+      <Button onClick={handleDrawerOpen}>Open drawer</Button>
       <Paper style={{ maxHeight: 500, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
         <List>
           {messages.map((message, index) => (
