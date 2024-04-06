@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -71,11 +71,27 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+export let data_choice = 'la_medicaid';
+
+export function getDataChoice() {
+    return data_choice;
+}
+
+
+
 
 export default function PersistentDrawer() {
   const theme = useTheme();
+  const [dataChoice, setDataChoice] = useState(getDataChoice());
+
   const [open, setOpen] = React.useState(false);
 
+    
+  const handleChange = (event) => {
+    data_choice = event.target.value;
+    setDataChoice(data_choice);
+  };
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -112,10 +128,25 @@ export default function PersistentDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography>
+          <FormControl  variant="standard" focused>
+            
+            <Select
+              labelId="data-select-label"
+              id="data-select"
+              value={dataChoice}
+              
+              label="Data"
+              style={{color: 'white'}}
+              onChange={handleChange}
+            >
+              <MenuItem value={"la_medicaid"}><Typography variant="h6" noWrap component="div">LA Medicaid Chatbot</Typography></MenuItem>
+              <MenuItem value={'gov_medicare'}><Typography variant="h6" noWrap component="div">Gov Medicare Chatbot</Typography></MenuItem>
+              <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Insurance Chatbot</Typography></MenuItem>
+            </Select>
+          </FormControl>
+         
         </Toolbar>
+        
       </AppBar>
       <Drawer
         sx={{
