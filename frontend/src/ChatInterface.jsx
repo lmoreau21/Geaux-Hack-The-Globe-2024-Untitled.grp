@@ -24,7 +24,7 @@ function Chat() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 250}} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem key={text} disablePadding>
@@ -83,12 +83,12 @@ function Chat() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Button onClick={toggleDrawer(true)}>Open drawer</Button>
     <Drawer open={open} onClose={toggleDrawer(false)}>
       {DrawerList}
     </Drawer>
-      <Paper style={{ maxHeight: 500, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
+      <Paper style={{ flexGrow: 1, overflow: 'auto', marginTop: 20, marginBottom: 20, padding: '20px' }}>
         <List>
           {messages.map((message, index) => (
             <ListItem key={index}>
@@ -105,7 +105,7 @@ function Chat() {
         </List>
         
       </Paper>
-      <Box display="flex">
+      <Box display="flex" component="form" onSubmit={sendMessage}>
         <TextField
           variant="outlined"
           fullWidth
@@ -113,7 +113,7 @@ function Chat() {
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your message here..."
         />
-        <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={sendMessage}>
+        <Button type="submit" variant="contained" color="primary" endIcon={<SendIcon />}>
           Send
         </Button>
       </Box>
