@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mardi Gras Chatbot API Documentation</title>
+    <title>Geaux Hack the Globe Chatbot API Documentation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,10 +40,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Mardi Gras Chatbot API</h1>
-        <p>Welcome to the Mardi Gras Chatbot API! Use our API to engage in interactive conversations with a virtual Mardi Gras enthusiast. Below you'll find information on how to use the `/chatbot/post/` endpoint.</p>
+        <h1>Geaux Hack the Globe</h1>
+        <p>Welcome to the Health Chatbot API! Use our API to engage in interactive conversations with a virtual Health agent. Below you'll find information on how to use the `/chatbot/` endpoint.</p>
         
-        <h2>Endpoint: /chatbot/post/</h2>
+        <h2>Endpoint: /chatbot/</h2>
         <p>This endpoint accepts POST requests to initiate or continue a conversation with the chatbot.</p>
 
         <h3>Request Format</h3>
@@ -51,28 +51,11 @@
         <div class="example">
 <pre>{
   "chat_history": [
-    {"type": "human", "content": "Hello! What can you tell me about Mardi Gras?"},
-    {"type": "ai", "content": "Mardi Gras is a vibrant celebration with parades, masquerade balls, and lots of music and dancing."}
+    {"type": "human", "content": "Hello! What can you tell me about HealthCare?", data_type:'la_medicaid'}
   ],
-  "question": "Can you recommend some traditional foods?"
+  "question": "Do i qualify for this service?"
 }</pre>
         </div>
 
-        <h3>Response Format</h3>
-        <p>The response will include the updated chat history and the latest response from the chatbot:</p>
-        <div class="example">
-<pre>{
-  "chat_history": [
-    {"type": "human", "content": "Hello! What can you tell me about Mardi Gras?"},
-    {"type": "ai", "content": "Mardi Gras is a vibrant celebration with parades, masquerade balls, and lots of music and dancing."},
-    {"type": "human", "content": "Can you recommend some traditional foods?"},
-    {"type": "ai", "content": "Certainly! Be sure to try King Cake, jambalaya, gumbo, and beignets."}
-  ],
-  "latest_response": "Certainly! Be sure to try King Cake, jambalaya, gumbo, and beignets."
-}</pre>
-        </div>
-
-        <p class="note">Note: Replace the content of `chat_history` and `question` with your specific conversation context and query.</p>
-    </div>
 </body>
 </html>

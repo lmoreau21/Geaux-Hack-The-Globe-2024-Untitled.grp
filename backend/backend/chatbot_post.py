@@ -30,16 +30,17 @@ def chatbot_post(request):
     '''   
     print(request.data)
     question = request.data.get('question', '')
-    data_source = request.data.get('data_source', 'la_medicaid')
+    data_source = request.data.get('date_source', '')
     
-    print(data_source)
     chat_history = request.data.get('chat_history', [])
         
     response = get_chat_chain(data_source=data_source).invoke({"question": question, "chat_history": chat_history})
+    print("Reponse",response)
+    
     
     chat_history.append({"role": "human", "content": question})
     chat_history.append({"role": "ai", "content": response})
-    
+    print("Chat History",chat_history)
     return JsonResponse({
         'chat_history': chat_history,
         'latest_response': response
