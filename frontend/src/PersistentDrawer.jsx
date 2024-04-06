@@ -55,12 +55,13 @@ const lightTheme = createTheme({
     },
     typography: {
         fontFamily: 'Roboto, sans-serif', // Default font family
+        
     },
     components: {
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            backgroundColor: '#C1E1C1', // Background color for Accordion
+            backgroundColor: '#CAD9CA', // Background color for Accordion
           },
         },
       },
@@ -75,7 +76,14 @@ const lightTheme = createTheme({
       MuiAccordionDetails: {
         styleOverrides: {
           root: {
-            backgroundColor: '#C1E1C1', // Background color for Accordion
+            backgroundColor: '#CAD9CA', // Background color for Accordion
+          },
+        },
+      },
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            color: '#000000', // Background color for Accordion
           },
         },
       },
@@ -87,6 +95,9 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#1D503B',
+    },
   },
 });
 

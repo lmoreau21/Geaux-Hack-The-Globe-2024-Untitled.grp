@@ -102,8 +102,7 @@ def get_chat_chain(data_source="la_medicaid"):
     try and help the user answer the questions.
 
     Format the response as markdown with the following guidelines: 
-    1. Use markdown headers, lists, and links to format the response when necessary. Only one Type of header (####) should be used for formatting section
-        headings, and simple paragraph text should be used for the body of your response.
+    1. Use paragraphs, lists, headers, and links to format the response when necessary. If you use a list, ensure it is formatted correctly. If you use a header, ONLY DO #### size headers. Bold, italic, underlined text is appropriate for emphasis.
     2. Ensure the response is concise, preferably no more than 1500 characters.
 
     You will cite the "sources" of the information at the bottom of the response using #### Sources: as the header.
