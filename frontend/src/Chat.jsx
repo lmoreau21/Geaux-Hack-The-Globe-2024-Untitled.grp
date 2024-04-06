@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
 import { Container, TextField, Button, List, ListItem, ListItemText, Paper, Box } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-
+import getDataChoice, { data_choice } from './PersistentDrawer.jsx';
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -20,13 +18,13 @@ function Chat() {
     const updatedMessages = [...messages, { role: "human", content: inputText }];
     setMessages(updatedMessages);
     setInputText('');
-    var source = 'gov_medicare';
+
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
         question: inputText,
         chat_history: updatedMessages,
-        date_source: source
+        date_source: data_choice
       });
 
       // Assuming the response is successful and in the expected format
