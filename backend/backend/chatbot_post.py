@@ -28,9 +28,11 @@ def chatbot_post(request):
     - chat_history: A list of dictionaries containing the updated chat history.
     - latest_response: A string containing the latest response from the chatbot.
     '''   
-
+    print(request.data)
     question = request.data.get('question', '')
-    data_source = request.data.get('date_type', 'la_medicaid')
+    data_source = request.data.get('data_source', 'la_medicaid')
+    
+    print(data_source)
     chat_history = request.data.get('chat_history', [])
         
     response = get_chat_chain(data_source=data_source).invoke({"question": question, "chat_history": chat_history})

@@ -31,7 +31,7 @@ class RetrieveData:
         for filename in os.listdir(folder_path):
             print(filename)
             count += 1
-        print(count)
+        print("Number of docs pulled: ",count)
         loader = PyPDFDirectoryLoader(folder_path)
         self.docs = loader.load()
         pickle.dump(self.docs, open(f"docs_{data_source}.pkl", "wb"))

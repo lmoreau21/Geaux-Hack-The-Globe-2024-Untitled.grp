@@ -20,12 +20,13 @@ function Chat() {
     const updatedMessages = [...messages, { role: "human", content: inputText }];
     setMessages(updatedMessages);
     setInputText('');
+    var source = 'gov_medicare';
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
         question: inputText,
         chat_history: updatedMessages,
-        date_type: 'la_medicare'
+        date_source: source
       });
 
       // Assuming the response is successful and in the expected format
