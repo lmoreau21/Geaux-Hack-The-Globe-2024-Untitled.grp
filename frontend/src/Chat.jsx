@@ -11,14 +11,9 @@ function Chat() {
   const [latestResponse, setLatestResponse] = useState('');
   const [chat_history, setChatHistory] = useState([]);
   const listEndRef = useRef(null);
-  const [messages, setMessages] = useState(() => {
-    const savedMessages = localStorage.getItem('chat_messages');
-    return savedMessages ? JSON.parse(savedMessages) : [];
-  });
+  const [messages, setMessages] = useState([]);
+  
 
-  useEffect(() => {
-    localStorage.setItem('chat_messages', JSON.stringify(messages));
-  }, [messages]);
 
   useEffect(() => {
     listEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,7 +43,6 @@ function Chat() {
         console.log(messages)
         setMessages(response.data.chat_history);
         setChatHistory(response.data.chat_history);
-        localStorage.setItem('chat_messages', JSON.stringify(messages));
         setLatestResponse(response.data.latest_response);
       }
     } catch (error) {
