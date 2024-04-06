@@ -3,7 +3,7 @@ import './ChatInterface.css';
 import axios from 'axios';
 import { FaChevronRight } from "react-icons/fa";
 import ReactMarkdown from 'react-markdown';
-
+import { StreamChat } from 'stream-chat'
 
 function ChatInterface() {
   const [messages, setMessages] = useState(() => {
