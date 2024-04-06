@@ -17,14 +17,54 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
+import {FormControl, Select, MenuItem} from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Switch} from '@mui/material';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckIcon from '@mui/icons-material/Check';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import InfoIcon from '@mui/icons-material/Info';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import Brightness4Icon from '@mui/icons-material/Brightness4'; // Moon icon
+import WbSunnyIcon from '@mui/icons-material/WbSunny'; // Sun icon
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Chat from './Chat.jsx'
 import {drawerList} from './DrawerList.jsx'
 
 const drawerWidth = 240;
+
+// Define light mode theme
+const lightTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#2F65A8',
+        },
+        secondary: {
+            main: '#2F65A8',
+        },
+        background: {
+            default: '#F5F7FC', // Background color
+          },
+          text: {
+            primary: '#000000', // Primary text color
+            secondary: '#757575', // Secondary text color
+          },
+    },
+    typography: {
+        fontFamily: 'Roboto, sans-serif', // Default font family
+    },
+    // Add other customizations as needed
+});
+
+// Define dark mode theme
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -77,21 +117,20 @@ export function getDataChoice() {
     return data_choice;
 }
 
-
-
-
 export default function PersistentDrawer() {
   const theme = useTheme();
+  
   const [dataChoice, setDataChoice] = useState(getDataChoice());
 
   const [open, setOpen] = React.useState(false);
 
+  const [darkMode, setDarkMode] = useState(false);
     
   const handleChange = (event) => {
     data_choice = event.target.value;
     setDataChoice(data_choice);
   };
-  
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -100,81 +139,115 @@ export default function PersistentDrawer() {
     setOpen(false);
   };
 
-  // Render dropdown menu for each category
-  const renderDropdowns = () => {
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode)
+  }
+
+  // Define the opacity for the icon
+  const iconOpacity = 0.5;
+
+  // Render Accordion for each category
+  const renderAccordions = () => {
     return Object.keys(drawerList).map(category => (
-      <div key={category}>
-        <h3>{category}</h3>
-        <select>
-          {drawerList[category].map((item, index) => (
-            <option key={index} value={item.url}>{item['display name']}</option>
-          ))}
-        </select>
-      </div>
+      <Accordion key={category} disableGutters={true}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls={`${category}-content`}
+          id={`${category}-header`}
+        >
+          <Typography variant='h5'>{category}</Typography>
+        </AccordionSummary>
+        <AccordionDetails variant='filled' style={{overflowY: 'auto'}}>
+            <List style={{width: '100%'}}>
+                {drawerList[category].map((item, index) => (
+                    <ListItem key={index} sx={{pl: 2}}>
+                        <ListItemText primaryTypographyProps={{fontWeight: 'bold'}}>
+                            <a href={item.url} style={{textDecoration: 'none'}}>{item['display name']}</a>
+                        </ListItemText>
+                    </ListItem>
+                ))}
+            </List>
+        </AccordionDetails>
+      </Accordion>
     ));
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <FormControl  variant="standard" focused>
-            
-            <Select
-              labelId="data-select-label"
-              id="data-select"
-              value={dataChoice}
-              
-              label="Data"
-              style={{color: 'white'}}
-              onChange={handleChange}
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+        <Box sx={{ display: 'flex'}} >
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+            <Toolbar style={{justifyContent: 'space-between'}}>
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{ mr: 2, ...(open && { display: 'none' }) }}
             >
-              <MenuItem value={"la_medicaid"}><Typography variant="h6" noWrap component="div">LA Medicaid Chatbot</Typography></MenuItem>
-              <MenuItem value={'gov_medicare'}><Typography variant="h6" noWrap component="div">Gov Medicare Chatbot</Typography></MenuItem>
-              <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Insurance Chatbot</Typography></MenuItem>
-            </Select>
-          </FormControl>
-         
-        </Toolbar>
-        
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+                <MenuIcon />
+            </IconButton>
+            <FormControl  variant="standard" focused>
+                
+                <Select
+                labelId="data-select-label"
+                id="data-select"
+                value={dataChoice}
+                
+                label="Data"
+                style={{color: 'white'}}
+                onChange={handleChange}
+                >
+                <MenuItem value={"la_medicaid"}><Typography variant="h6" noWrap component="div">LA Medicaid Chatbot</Typography></MenuItem>
+                <MenuItem value={'gov_medicare'}><Typography variant="h6" noWrap component="div">Gov Medicare Chatbot</Typography></MenuItem>
+                <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Insurance Chatbot</Typography></MenuItem>
+                </Select>
+            </FormControl>
+
+            <Switch 
+                checked={darkMode} 
+                onChange={toggleDarkMode} 
+                icon={<WbSunnyIcon sx={{color: '#FFE082'}} />} // Sun icon for light mode
+                checkedIcon={<Brightness4Icon />} // Moon icon for dark mode
+                sx={{
+                    '& .MuiSwitch-track': {
+                        backgroundColor: darkMode ? '#424242' : '#FDE9AE',
+                        opacity: 1,
+                    }
+                }}
+            />
+            
+            </Toolbar>
+            
+        </AppBar>
+        <Drawer
+            sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {renderDropdowns()}
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <Chat />
-      </Main>
-    </Box>
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+            },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+        >
+            <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <Box>
+            {renderAccordions()}
+            </Box>
+        </Drawer>
+        <Main open={open}>
+            <DrawerHeader />
+            <Chat />
+        </Main>
+        </Box>
+    </ThemeProvider>
   );
 }
