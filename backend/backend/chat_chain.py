@@ -75,30 +75,47 @@ def get_chat_chain(data_source="la_medicaid"):
     
     # Define a prompt to contextualize the user's question
     # Create our prompt
-    rag_template = """
-    {context}
-    You are a """+data_source+""" eligibility analyst for the state of Louisiana. You have been asked to provide information on the topic of Medicaid eligibility.
-
-    You will use the above context to respond to the user's prompt in plain English. Your writing, while not being condescending, should be easy to
-    understand and should present the details of the documents in a concise and simple way. Your response must fully address all parts of the user's 
+    if data_source == "la_medicaid":
+        rag_template = """
+        {context}
+        
+        You are a chatbot designed to help users find information about Medicaid in Louisiana. You have access to a collection of documents that contain information about Medicaid in Louisiana. Use outside knowledge to help answer the user's question. You should provide accurate and up-to-date information to the best of your ability. If you are unsure about the answer, you should let the user know. Remember to be helpful and courteous, and to try and help the user answer the questions.
+        """
+    elif data_source == "gov_medicare":
+        rag_template = """
+        {context}
+        
+        You are a chatbot designed to help users find information about Medicare in the United States. You have access to a collection of documents that contain information about Medicare in the United States. Use outside knowledge to help answer the user's question. You should provide accurate and up-to-date information to the best of your ability. If you are unsure about the answer, you should let the user know. Remember to be helpful and courteous, and to try and help the user answer the questions.
+        """
+    elif data_source == "insurance":
+        rag_template = """
+        {context}
+        
+        You are a chatbot designed to help users find information about health insurance in the United States. You have access to a collection of documents that contain information about health insurance in the United States. Use outside knowledge to help answer the user's question. You should provide accurate and up-to-date information to the best of your ability. If you are unsure about the answer, you should let the user know. Remember to be helpful and courteous, and to try and help the user answer the questions.
+        """
+    directory = os.path.join(os.path.dirname(__file__), data_source)
+    print(directory)
+    
+    rag_template_end = """
+    Use the above context to respond to the user's prompt in English. Your response must fully address all parts of the user's 
     questiopn as best as possible by incorporating and synthesizing any relevant details from the context. Remember to be helpful and courteous, to
-    try and help the user answer the questions about their Medicaid eligibility as easily as you possibly can
+    try and help the user answer the questions.
 
     Format the response as markdown with the following guidelines: 
-    1. Use markdown headers, lists, and links to format the response when necessary. Only one Type of header (###) should be used for formatting section
+    1. Use markdown headers, lists, and links to format the response when necessary. Only one Type of header (####) should be used for formatting section
         headings, and simple paragraph text should be used for the body of your response.
-    3. Ensure the response is concise, preferably no more than 3000 characters.
-    4. Use #cc66ff as the link color or other accents in the response
-    
-    Consider that one unit of your context - a single json object containing page content and metadata - is a "Document"
+    2. Ensure the response is concise, preferably no more than 1500 characters.
 
-    You will cite the "source" of the information at the bottom of the response as a footnote.
+    You will cite the "sources" of the information at the bottom of the response using #### Sources: as the header.
     The "source" should include the title(s) of the document(s) that provided the information used to synthesize your response, as well as the page numbers
-    listed alongside these documents. Only cite articles that exist within your context, and that you specifically used to synthesize your response.
-    
+    listed alongside these documents. The file sources should be linked to the exact file locations in this directory so on press it opens to those links: """+directory+"""
+        Example: if the source is I-1660, it should link to this pdf using the directory: 
+            [I-1660 page number](http://127.0.0.1:8000/static/I-1660.pdf)
+
+        DO NOT LINK TO THE INTERNET, ONLY TO THE FILES IN THIS DIRECTORY
     Here is the user's question: {question}
     """
-
+    rag_template = rag_template + rag_template_end
     rag_prompt = ChatPromptTemplate.from_template(rag_template)
     
     def input_handler(input: dict):
