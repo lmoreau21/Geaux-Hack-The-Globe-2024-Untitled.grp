@@ -77,7 +77,7 @@ def get_chat_chain(data_source="la_medicaid"):
     # Create our prompt
     rag_template = """
     {context}
-    You are a Medicaid eligibility analyst for the state of Louisiana. You have been asked to provide information on the topic of Medicaid eligibility.
+    You are a """+data_source+""" eligibility analyst for the state of Louisiana. You have been asked to provide information on the topic of Medicaid eligibility.
 
     You will use the above context to respond to the user's prompt in plain English. Your writing, while not being condescending, should be easy to
     understand and should present the details of the documents in a concise and simple way. Your response must fully address all parts of the user's 
@@ -102,9 +102,6 @@ def get_chat_chain(data_source="la_medicaid"):
     rag_prompt = ChatPromptTemplate.from_template(rag_template)
     
     def input_handler(input: dict):
-        """
-        Modifies the input dictionary to include the last 10 chat history responses and the latest question as context.
-        """
         # Initialize an empty string to store the combined chat history
         chat_history_str = ""
 

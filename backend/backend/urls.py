@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .json_llm import chatbot_post
+from .chatbot_post import chatbot_post
 #from .json_llm import json_chatbot_post
 from .views import default_web_view
 urlpatterns = [
