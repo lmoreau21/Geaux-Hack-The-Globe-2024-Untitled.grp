@@ -40,10 +40,10 @@ const drawerWidth = 240;
 const lightTheme = createTheme({
     palette: {
         primary: {
-            main: '#2F65A8',
+            main: '#1D503B',
         },
         secondary: {
-            main: '#2F65A8',
+            main: '#82CEA0',
         },
         background: {
             default: '#F5F7FC', // Background color
@@ -215,7 +215,7 @@ export default function PersistentDrawer() {
             <Switch 
                 checked={darkMode} 
                 onChange={toggleDarkMode} 
-                icon={<WbSunnyIcon sx={{color: '#FFE082'}} />} // Sun icon for light mode
+                icon={<WbSunnyIcon sx={{color: '#F3B262'}} />} // Sun icon for light mode
                 checkedIcon={<Brightness4Icon />} // Moon icon for dark mode
                 sx={{
                     '& .MuiSwitch-track': {
