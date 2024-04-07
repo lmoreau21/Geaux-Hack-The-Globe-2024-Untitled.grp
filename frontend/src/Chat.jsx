@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {Typography, Divider, Container, TextField, Button, List, ListItem, ListItemText, Paper, Box } from '@mui/material';
+import {CircularProgress , Typography, Divider, Container, TextField, Button, List, ListItem, ListItemText, Paper, Box } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import getDataChoice, { data_choice } from './PersistentDrawer.jsx';
+
 function Chat() {
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const [inputText, setInputText] = useState('');
   const [latestResponse, setLatestResponse] = useState('');
   const [chat_history, setChatHistory] = useState([]);
@@ -28,7 +30,7 @@ function Chat() {
     setMessages(updatedMessages);
     setInputText('');
 
-
+    setIsLoading(true);
     try {
       const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
         question: inputText,
@@ -48,11 +50,14 @@ function Chat() {
     } catch (error) {
       console.error('Error sending message:', error);
      
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Container  style={{height: '79vh', display: 'flex', flexDirection: 'column', overflow:'hidden', padding:'0px'}}>
+      
       <Container style={{ flexGrow: 1,overflow: 'auto', }}>
         <List>
           {messages.map((message, index) => (
@@ -67,11 +72,20 @@ function Chat() {
               ) : (
                 <ListItemText primary={message.content} />
               )}
+            
               
             </ListItem>
-            
+              
             </Container>
           ))}
+          {isLoading && (
+                <Container>
+                <Divider textAlign='left'> AI </Divider>
+                <Box display="flex" justifyContent="center">
+                  <CircularProgress />
+                </Box>
+                </Container>
+              )}
           <div ref={listEndRef} /> 
         </List>
         

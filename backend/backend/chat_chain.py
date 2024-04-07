@@ -109,6 +109,7 @@ def get_chat_chain(data_source="la_medicaid"):
     The "source" should include the title(s) of the document(s) that provided the information used to synthesize your response, as well as the page numbers
     listed alongside these documents. The file sources should be the name of the document(s) used to synthesize the response. Append just http://127.0.0.1:8000/static/ + name + .pdf  
             [I-1660 page number](http://127.0.0.1:8000/static/I-1660.pdf)
+        DO NOT include backend/la_medicaid/ or backend/gov_medicare/ or backend/insurance in the link. Just put the name after the last /
 
     Here is the user's question: {question}
     """
