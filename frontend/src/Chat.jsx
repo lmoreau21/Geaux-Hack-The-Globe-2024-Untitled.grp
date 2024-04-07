@@ -67,7 +67,7 @@ function Chat() {
               {/* Render the message content or Markdown based on the role */}
               {message.role === 'ai' ? (
                 <Box >
-                  <ReactMarkdown children={latestResponse} remarkPlugins={[remarkGfm]} />
+                  <ReactMarkdown children={message.content} remarkPlugins={[remarkGfm]} />
                 </Box>
               ) : (
                 <ListItemText primary={message.content} />
