@@ -56,7 +56,7 @@ function Chat() {
   };
 
   return (
-    <Container  style={{height: '79vh', display: 'flex', flexDirection: 'column', overflow:'hidden', padding:'0px'}}>
+    <Container  style={{height: '83vh', display: 'flex', flexDirection: 'column', overflow:'hidden', padding:'0px'}}>
       
       <Container style={{ flexGrow: 1,overflow: 'auto', }}>
         <List>
@@ -103,7 +103,7 @@ function Chat() {
         </Button>
       </Box>
       
-      <Typography variant="h10" align="center" paddingTop={'3px'}> We make mistakes too! Please be patient with us. </Typography>
+      <Typography variant="h8" fontSize={13} align="center" marginTop={'5px'}> This can make mistakes! Consider checking important information. </Typography>
       
     </Container>
   );
