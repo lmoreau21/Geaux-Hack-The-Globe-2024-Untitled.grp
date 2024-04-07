@@ -187,12 +187,12 @@ export default function PersistentDrawer() {
   const renderAccordions = () => {
     return Object.keys(drawerList).map(category => (
       
-      <Accordion key={category} disableGutters={true} style={{paddingLeft: '14px'}}>
+      <Accordion key={category} disableGutters={true} style={{ borderBottom:'1px solid black'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`${category}-content`}
           id={`${category}-header`}
-          sx = {{ borderBottom:'1px solid black'}} 
+          
           
         >
           <Typography variant='h7'>{category}</Typography>
@@ -246,8 +246,8 @@ export default function PersistentDrawer() {
                 onChange={handleChange}
                 >
                 <MenuItem value={"la_medicaid"}><Typography variant="h6" noWrap component="div">LA Medicaid Chatbot</Typography></MenuItem>
-                <MenuItem value={'gov_medicare'}><Typography variant="h6" noWrap component="div">Gov Medicare Chatbot</Typography></MenuItem>
-                <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Insurance Chatbot</Typography></MenuItem>
+                <MenuItem value={'gov_medicare'}><Typography variant="h6" noWrap component="div">US Gov Medicare Chatbot</Typography></MenuItem>
+                <MenuItem value={'insurance'}> <Typography variant="h6" noWrap component="div"> Health Insurance Chatbot</Typography></MenuItem>
                 </Select>
             </FormControl>
             
@@ -257,9 +257,11 @@ export default function PersistentDrawer() {
                 icon={<WbSunnyIcon sx={{color: '#F3B262'}} />} // Sun icon for light mode
                 checkedIcon={<Brightness4Icon />} // Moon icon for dark mode
                 sx={{
+
                     '& .MuiSwitch-track': {
                         backgroundColor: darkMode ? '#424242' : '#FDE9AE',
                         opacity: 1,
+
                     }
                 }}
             />

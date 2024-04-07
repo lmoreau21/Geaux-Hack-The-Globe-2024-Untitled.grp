@@ -107,11 +107,9 @@ def get_chat_chain(data_source="la_medicaid"):
 
     You will cite the "sources" of the information at the bottom of the response using #### Sources: as the header.
     The "source" should include the title(s) of the document(s) that provided the information used to synthesize your response, as well as the page numbers
-    listed alongside these documents. The file sources should be linked to the exact file locations in this directory so on press it opens to those links: """+directory+"""
-        Example: if the source is I-1660, it should link to this pdf using the directory: 
+    listed alongside these documents. The file sources should be the name of the document(s) used to synthesize the response. Append just http://127.0.0.1:8000/static/ + name + .pdf  
             [I-1660 page number](http://127.0.0.1:8000/static/I-1660.pdf)
 
-        DO NOT LINK TO THE INTERNET, ONLY TO THE FILES IN THIS DIRECTORY
     Here is the user's question: {question}
     """
     rag_template = rag_template + rag_template_end
