@@ -120,9 +120,10 @@ def get_chat_chain(data_source="la_medicaid"):
     You will cite the "sources" of the information at the bottom of the response using #### Sources: as the header.
     The "source" should include the title(s) of the document(s) that provided the information used to synthesize your response, as well as the page numbers
     It needs to LINK to the file url locations. The file sources should be the name of the document(s) used to synthesize the response. Append just http://127.0.0.1:8000/static/ + name + .pdf  
-            [I-1660 page number](http://127.0.0.1:8000/static/I-1660.pdf)
+           
+            Make links like this: <a href=url>file name and page number</a>
         DO NOT include backend/la_medicaid/ or backend/gov_medicare/ or backend/insurance in the link. Just put the name after the last /
-    ALWAYS HAVE A HYPERLINK WHEN CITING DOCUMENTS
+    ALWAYS HAVE A HYPERLINK WHEN CITING DOCUMENTS 
     Here is the user's question: {question}
     """
     rag_template = rag_template + rag_template_end

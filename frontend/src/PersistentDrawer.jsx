@@ -97,7 +97,7 @@ const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       main: '#448067',
-    },
+    }
   },
 });
 
