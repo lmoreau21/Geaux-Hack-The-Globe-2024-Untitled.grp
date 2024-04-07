@@ -58,10 +58,10 @@ def get_chat_chain(data_source="la_medicaid"):
     else:
         db = Chroma.from_documents(docs, embeddings, persist_directory=f"chroma_db_{data_source}")
 
-    semantic_retriever = db.as_retriever(k=7)
+    semantic_retriever = db.as_retriever(k=15, lambda_mult=0.33)
     # Defining our lexical retriever, which uses the BM25 algorithm, to retrieve the top-7 most
     # lexically similar chunks
-    bm25_retriever = BM25Retriever.from_documents(docs, k=7)
+    bm25_retriever = BM25Retriever.from_documents(docs, k=15)
     # Merge retrievers together into a single retriever, which will return up to 10 chunks
     merged_retriever = MergerRetriever(retrievers=[semantic_retriever, bm25_retriever])
     # We are using Cohere Rerank as our compression algorithm
@@ -98,11 +98,23 @@ def get_chat_chain(data_source="la_medicaid"):
     
     rag_template_end = """
     Use the above context to respond to the user's prompt in English. Your response must fully address all parts of the user's 
-    questiopn as best as possible by incorporating and synthesizing any relevant details from the context. Remember to be helpful and courteous, to
-    try and help the user answer the questions.
+    questiopn as best as possible by incorporating and synthesizing any relevant details from the context. You may have to go into 
+    SIGNIFICANTLY more depth than what the user asked. Users will typically not be very experienced, and you may have to elicit
+    better questions from the user if the context you have access to is insufficient to answer many of their questions. It is your
+    job to give the user help with problems they do not yet know how to ask. You must answer ALL parts of the user's question COMPLETELY 
+    to the best of your provided context's quality.
+
+    If the user asks a vague question, please be as specific as possible in your response given your context. You should suggest or 
+    inform the user of Specific Policies or details that you think they need to know, to help them with their problem or questions.
+
+    After you have answered their question, especially if it was a somewhat Vague question, Please ask the user for more clarification
+    or information so that you could better answer their question.
+    
+    Remember to be helpful and courteous, and to be professional yet not overly formal.
 
     Format the response as markdown with the following guidelines: 
-    1. Use paragraphs, lists, headers, and links to format the response when necessary. If you use a list, ensure it is formatted correctly. If you use a header, ONLY DO #### size headers. Bold, italic, underlined text is appropriate for emphasis.
+    1. Use paragraphs, lists, headers, and links to format the response when necessary. If you use a list, ensure it is formatted correctly. 
+        If you use a header, ONLY USE #### size headers. Bold, or Italic ext is appropriate for emphasis.
     2. Ensure the response is concise, preferably no more than 1500 characters.
 
     You will cite the "sources" of the information at the bottom of the response using #### Sources: as the header.
